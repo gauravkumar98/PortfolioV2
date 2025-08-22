@@ -56,9 +56,39 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const contactList = document.getElementById('contact-list');
   if (contactList) {
+    // helper to pick an SVG icon by label
+    function getContactIcon(label) {
+      const key = String(label || '').toLowerCase();
+      if (key.includes('github')) {
+        return `
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.4-1.35-1.77-1.35-1.77-1.1-.75.08-.73.08-.73 1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.83 1.32 3.52 1.01.11-.78.42-1.32.76-1.62-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.37 1.24-3.21-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.9 1.24 3.21 0 4.61-2.8 5.62-5.48 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.88-.01 3.27 0 .32.21.7.82.58A12 12 0 0 0 12 .5z" fill="currentColor"/>
+          </svg>`;
+      }
+      if (key.includes('linkedin')) {
+        return `
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.22 8.5H4.7V24H.22zM8.98 8.5h4.23v2.07h.06c.59-1.11 2.03-2.28 4.19-2.28 4.48 0 5.31 2.95 5.31 6.79V24h-4.48v-7.13c0-1.7-.03-3.9-2.38-3.9-2.38 0-2.74 1.85-2.74 3.77V24H8.98z" fill="currentColor"/>
+          </svg>`;
+      }
+      
+      // default link icon
+      return `
+        <svg class="contact-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3.9 12a4.1 4.1 0 0 0 4.1 4.1h3v-2H8a2.1 2.1 0 1 1 0-4.2h3V8H8A4.1 4.1 0 0 0 3.9 12zM15 8v2h3a2.1 2.1 0 1 1 0 4.2h-3v2h3a4.1 4.1 0 1 0 0-8.2H15z" fill="currentColor"/>
+        </svg>`;
+    }
+
     PROFILE.contact.links.forEach(link => {
       const li = document.createElement('li');
-      li.innerHTML = `<a href="${link.url}" target="_blank" rel="noreferrer" class="text-decoration-none">${link.label}</a>`;
+      const icon = getContactIcon(link.label || link.url || 'link');
+      // Add special class for hackerrank so we can color it green by default
+      const extraClass = String(link.label || '').toLowerCase().includes('hackerrank') ? ' hackerrank' : '';
+      // Render icon-only link with a visually-hidden label for accessibility.
+      li.innerHTML = `<a href="${link.url}" target="_blank" rel="noreferrer" class="text-decoration-none d-inline-flex align-items-center justify-content-center${extraClass}" aria-label="${link.label}" title="${link.label}">
+          ${icon}
+          <span class="visually-hidden">${link.label}</span>
+        </a>`;
       contactList.appendChild(li);
     });
   }
@@ -119,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (href.startsWith('#')) {
         e.preventDefault();
         const target = document.querySelector(href);
-        if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         history.replaceState(null, '', href);
       }
     });
@@ -256,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const percentageHtml = edu.percentage ? `
         <div class="mt-2 d-flex align-items-center gap-2">
           <div class="edu-percentage small text-muted">${edu.percentage}</div>
-          ${/\d+(\.\d+)?%/.test(String(edu.percentage)) ? `<div class="edu-progress" aria-hidden="true"><div class="edu-progress-fill" style="width:${String(edu.percentage).replace('%','')}%;"></div></div>` : ''}
+          ${/\d+(\.\d+)?%/.test(String(edu.percentage)) ? `<div class="edu-progress" aria-hidden="true"><div class="edu-progress-fill" style="width:${String(edu.percentage).replace('%', '')}%;"></div></div>` : ''}
         </div>
       ` : '';
 
