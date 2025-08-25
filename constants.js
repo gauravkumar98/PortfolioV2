@@ -1,9 +1,28 @@
+const EXPERIENCE_START_DATE = new Date(2022, 6, 11);
+function getExperienceDuration(startDate) {
+  const now = new Date();
+  let years = now.getFullYear() - startDate.getFullYear();
+  let months = now.getMonth() - startDate.getMonth();
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+  let result = "";
+  if (years > 0) result += years + (years === 1 ? " year" : " years");
+  if (months > 0) {
+    if (result) result += " ";
+    result += months + (months === 1 ? " month" : " months");
+  }
+  return result;
+  
+}
+const exp_date = getExperienceDuration(EXPERIENCE_START_DATE);
 const PROFILE = {
   name: "Gaurav Kumar",
   title: "Full Stack Developer",
-  shortIntro: "Versatile and detail-oriented Full Stack Developer with 3 years of experience in building scalable web applications using Java, Spring Boot, and Angular.",
+  shortIntro: `Versatile and detail-oriented Full Stack Developer with ${exp_date} of experience in building scalable web applications using Java, Spring Boot, and Angular.`,
   tagline: "Passionate about clean, maintainable code and continuous improvement.",
-  resumeUrl: "js/Gaurav_Kumar_Resume-1.pdf",
+  resumeUrl: "Gaurav_Kumar_Resume.pdf",
   contact: {
     email: "gauravkumar.en@gmail.com",
     phone: "+91-7273826351",
@@ -21,7 +40,8 @@ const PROFILE = {
     "Git", "GitHub", "Jenkins", "CI/CD", "SonarQube",
     "JUnit", "Mockito", "TDD", "BDD",
     "Splunk", "Caching strategies",
-    "Workday Integration", "System Design", "GenAI (ChatGPT integration)"
+    "Generative AI", "ChatGPT integration", "Agentic AI",
+    "LLM Integration", "System Design"
   ],
   experiences: [
     {
@@ -75,12 +95,4 @@ const PROFILE = {
     "Open to relocation and remote opportunities",
     "Passionate about clean code, system design, and emerging tech (e.g., GenAI)"
   ],
-  googleForm: {
-    action: "",
-    fields: {
-      name: "",
-      email: "",
-      message: ""
-    }
-  }
 };
